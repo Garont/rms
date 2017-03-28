@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  404
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<img src="{{ url_for('static', filename='img/404.png') }}">
+{% endblock %}
+

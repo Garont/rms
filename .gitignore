@@ -1,0 +1,8 @@
+#for config git update-index --assume-unchanged config.py
+config.py
+installation.bash
+app.log
+*.rrd
+*.pyc
+rms/*.pyc
+logs/*

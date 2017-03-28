@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% block title %}
+  500 ERROR
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+
+<legend>500 ERROR</legend>
+
+{{ e }}
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Admin
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+<fieldset>
+
+<!-- Form Name -->
+<legend>Admin page</legend>
+
+<li><a href="{{ url_for('admin_users') }}">Edit users</a></li>
+<li><a href="{{ url_for('admin_logs_purge') }}">Purge current log</a></li>
+<li><a href="{{ url_for('getjobs') }}">Joblist</a></li>
+<li><a href="{{ url_for('remove_all_jobs') }}">Remove All Jobs From Scheduler(Warning! Debug Feature!)</a> Jobs Will Remains In Mysql</li>
+
+{% endblock %}
+

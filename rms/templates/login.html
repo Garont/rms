@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block title %}
+  Login
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<form action="" method=post class="form-horizontal">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <legend>Login</legend>
+
+<div class="login_to_left">
+    <div class="control-group">
+        <div class="controls">
+          <input type="text" id="username" name="username" class="input-xlarge"
+            placeholder="Enter Username" required>
+        </div>
+    </div>
+ 
+    <div class="control-group">
+        <div class="controls">
+          <input type="password" id="password" name="password" class="input-xlarge"
+            placeholder="Enter Password" required>
+        </div>
+    </div>
+ 
+    <div class="control-group">
+        <div class="controls">
+          <button type="submit" class="btn btn-success">Signin</button>
+        </div>
+    </div>
+</div>
+  </form>
+  <br>
+{% endblock %}

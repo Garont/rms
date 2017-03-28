@@ -1,0 +1,211 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  New
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<form class="form-newjob" action="{{ url_for('new') }}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+<fieldset>
+
+<!-- Form Name -->
+<legend>New Backup Instance</legend>
+<!-- Text input-->
+<div class="control-group">
+    <input id="jobname" name="jobname" type="text" placeholder="Jobname (Backup MySQL)" class="input-large" required="">
+</div>
+<div class="control-group">
+    <input id="username" name="username" type="text" placeholder="Username (root)" class="input-large" onkeypress="return restrictCharacters(this, event, alphaIntOnly);" onkeyup="onetoother(this)" required="">
+</div>
+<div class="control-group">
+    <input id="hostname" name="hostname" type="text" placeholder="Hostname (example.com)" class="input-large" required="">
+</div>
+
+<div class="control-group">
+    <input id="port" name="port" type="text" placeholder="port (empty means 22)" class="input-large">
+</div>
+
+<div class="control-group">
+    <input id="secret" name="secret" type="text" placeholder="PrivateKey(empty to use user key)" class="input-large">
+</div>
+
+<!-- Textarea -->
+<div class="control-group">                 
+    <textarea class="field span6" rows="8" id="fabscript" name="fabscript" placeholder="Paste script here"></textarea>
+</div>
+
+<!-- Text input-->
+<!-- <div class="control-group">
+    <input id="cronstring" name="cronstring" type="text" placeholder="0 */12 * * *" class="input-large" required="" data-toggle="tooltip"
+    data-placement="right" title="second, minute, hour, day, week, day_of_week, month">
+</div> -->
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="sec"></label>
+  <div class="controls">
+    <select id="sec" name="sec" class="input-mini">
+      <option value='None'>Sec</option>
+       <option>*</option>
+      {% for option in range(1, 60) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 60) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="min"></label>
+  <div class="controls">
+    <select id="min" name="min" class="input-mini">
+      <option value='None'>Min</option>
+      <option>*</option>
+      {% for option in range(1, 60) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 60) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="hour"></label>
+  <div class="controls">
+    <select id="hour" name="hour" class="input-small">
+      <option value='None'>Hour</option>
+      <option>*</option>
+      {% for option in range(1, 24) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 24) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="day"></label>
+  <div class="controls">
+    <select id="day" name="day" class="input-mini">
+      <option value='None'>Day</option>
+      <option>*</option>
+      {% for option in range(1, 32) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 32) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="week"></label>
+  <div class="controls">
+    <select id="week" name="week" class="input-small">
+      <option value='None'>Week</option>
+      <option>*</option>
+      {% for option in range(1, 54) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 54) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="dayofweek"></label>
+  <div class="controls">
+    <select id="dayofweek" name="dayofweek" class="input-small">
+      <option value='None'>DoW</option>
+      <option>*</option>
+      {% for option in range(0, 7) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="month"></label>
+  <div class="controls">
+    <select id="month" name="month" class="input-small">
+      <option value='None'>Month</option>
+      <option>*</option>
+      {% for option in range(1, 13) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+<!-- <div class="control-group">
+    <input id="rrdname" name="rrdname" type="hidden" placeholder="RRD Name" class="input-large" onkeypress="return restrictCharacters(this, event, alphaIntOnly);" required="">
+</div> -->
+<div class="control-group">
+ <input id="switch-isactive" type="checkbox" name="isactive" data-on-text="Enabled" data-off-text="Disabled">
+</div>
+<!-- Button -->
+<div class="btn-group inline" data-toggle="buttons-checkbox">
+    <button id="save" name="save" class="btn btn-success">Save</button>
+    <!-- <button id="save" name="save" class="btn btn-info">Test</button> -->
+</div>
+</fieldset>
+</form>
+<br>
+        <script type="text/javascript">
+
+        $(window).load(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+        })
+
+        $("[name='isactive']").bootstrapSwitch();
+        
+        // function onetoother(val){
+        //     var a = document.getElementById(val.id).value
+        //     document.getElementById("rrdname").value=a+"_{{rrdplus}}"
+        // }    
+        </script>
+        <script type="text/javascript">
+            var digitsOnly = /[1234567890]/g;
+            var integerOnly = /[0-9\.]/g;
+            var alphaIntOnly = /[A-Za-z0-9_]/g;
+
+            function restrictCharacters(myfield, e, restrictionType) {
+                if (!e) var e = window.event
+                if (e.keyCode) code = e.keyCode;
+                else if (e.which) code = e.which;
+                var character = String.fromCharCode(code);
+
+                if (code==27) { this.blur(); return false; }
+
+                if (!e.ctrlKey && code!=9 && code!=8 && code!=36 && code!=37 && code!=38 && (code!=39 || (code==39 && character=="'")) && code!=40) {
+                    if (character.match(restrictionType)) {
+                        return true;
+                    } else {
+                        return false;
+                    }              
+                }
+            }
+        </script>
+{% endblock %}
+

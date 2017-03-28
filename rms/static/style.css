@@ -1,0 +1,90 @@
+* {padding: 0; margin: 0;}
+body { background-color: #222; }
+
+.main { margin: auto; margin-right: 1px; width: 84.5%; background-color: #f5f5f5; }
+.head { width: 97.5%; height:52px; position:relative; }
+div.hr { background-color:#000; width:75%; height:1px; }
+.footer { margin-bottom:0; width:84.5%;; font: 9pt Tahoma, Arial, sans-serif; color: #aaa;}
+div.content { margin: 0; width:84.5%;}
+div.header { float:left; text-align:left; }
+div.header span, h1 { font-family: Tahoma, Arial, sans-serif; font-size: 14pt; font-weight: bold; color: #0089dd; }
+.centertop { margin-bottom:0; width:100%; background: #222; }
+.logo { position: absolute; width:480px; height:50px; left:0px; top:22px; text-align:left; }
+
+.sidebar {
+/*position: fixed;*/
+top: 51px;
+bottom: 0;
+left: 0;
+z-index: 1000;
+display: block;
+padding: 20px;
+overflow-x: hidden;
+overflow-y: auto;
+background-color: #f5f5f5;
+border-right: 1px solid #eee;
+}
+
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0-rc2/css/bootstrap-glyphicons.css");
+
+.spinner {
+  margin: 0px;
+  width: 70px;
+  /*text-align: center;*/
+}
+
+.spinner > div {
+  width: 20px;
+  height: 20px;
+  background-color: #dff0d8;
+
+  border-radius: 100%;
+  display: inline-block;
+  -webkit-animation: bouncedelay 1.4s infinite ease-in-out;
+  animation: bouncedelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.spinner .bounce1 {
+   background-color: #dff0d8;
+  -webkit-animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+   background-color: red;
+  -webkit-animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+@-webkit-keyframes bouncedelay {
+  0%, 80%, 100% { -webkit-transform: scale(0.0) }
+  40% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes bouncedelay {
+  0%, 80%, 100% { 
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 40% { 
+    transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+  }
+}
+
+div { display:block; /* Pre-existing code */ }
+div.inline {
+    display:inline-block;
+}
+
+div .login_to_left {
+    /*float: left;*/
+    margin-right: 18%;
+}
+
+div .changelog_internals {
+  width: 44%; 
+  text-align: left;
+}

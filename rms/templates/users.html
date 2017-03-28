@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+{% block title %}
+  Edit users
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+
+<legend>Edit users</legend>
+
+New User
+<form class="form-newuser" action="{{ url_for('admin_users') }}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="hidden" name="formtype" value="create_user">
+  <fieldset>
+  <input id="login" name="login" type="text" placeholder="Login" class="input-large" required=""> 
+  <input id="password" name="password" type="text" placeholder="Password" class="input-large" required=""> 
+  <input id="roles" name="roles" type="text" placeholder="Roles(admin,user,world_saver)" class="input-large" required="">
+ </fieldset>
+ <input type="submit" value="Submit">
+</form>
+
+<form class="form-deluser" action="{{ url_for('admin_users') }}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="hidden" name="formtype" value="delete_users">
+   <fieldset>
+<table class="table">
+<tbody>
+	<td><b>#</b></td>
+    <td><b>Login</b></td>
+    <td><b>Roles</b></td>
+    <td><b>&nbsp;Delete</b></td>
+	</tr>
+{% for user in users %}
+<tr class="success">
+	<td>{{ loop.index }}</td>
+	<td>{{ user.fp_user }}</td>
+	<td>{{ user.fp_role }}</td>
+	<td>
+    	<input type="checkbox" name="check" value="'{{ user.id }}','{{ user.fp_user }}','{{ user.fp_role }}'" size="mini" >
+	</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+ </fieldset>
+ <input type="submit" value="Submit">
+</form>
+<br>
+<br>
+
+<script type="text/javascript">
+	  $(window).load(function () {
+	  		$("[type='checkbox']").bootstrapSwitch('size', 'mini')
+            $("[type='checkbox']").bootstrapSwitch('onColor', 'danger')
+            $("[type='checkbox']").bootstrapSwitch('onText', 'yes')
+            $("[type='checkbox']").bootstrapSwitch('offText', 'no')
+        })
+	
+</script>
+{% endblock %}

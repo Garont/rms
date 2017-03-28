@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Main
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+<script>
+    moment().format();
+
+$(function () {
+    $(document).ready(function () {
+        var enable_refresh = true;
+        setTimeout(function () {
+            if(enable_refresh)
+                location.reload();
+        }, 60 * 1000);
+    });
+});
+
+</script>
+{% endblock %}
+{% block content %}
+<br>
+<table class="table">
+<tbody>
+	<td><b>#</b></td>
+    <td><b>Service</b></td>
+    <td><b>Status</b></td>
+    <td><b>Last Launch</b></td>
+    <td><b>Last Success Launch</b></td>
+    <td><b>Edit</b></td>
+	</tr>
+{% for item in all_tasks %}
+{% if item.exit_status != 0 %}
+<tr class="error"> 
+{% elif item.enabled != True %}
+<tr class="info">
+{% else %}
+<tr class="success">
+{% endif %}
+<td>{{ loop.index }}</td>
+<td>{{ item.jobname }}</td>
+
+{% if item.exit_status != 0 %}
+<td><div class="spinner">
+ <div class="bounce2">&nbsp;<span class="glyphicon glyphicon-warning-sign"></span></div>
+</div></span></td>
+{% elif item.enabled != True %}
+<td>&nbsp;<span class="glyphicon glyphicon-pause"></span></td>
+{% else %}
+<td>&nbsp;<span class="glyphicon glyphicon-thumbs-up"></span></td>
+{% endif %}
+{% if item.last_launch != None %}
+<td>{{ momentjs(item.last_launch).format('MMMM DD HH:mm:ss') }}</td>
+{% else %}
+<td>Never</td>
+{% endif %}
+{% if item.last_success_launch != None %}
+<td>{{ momentjs(item.last_success_launch).format('MMMM DD HH:mm:ss') }}</td>
+{% else %}
+<td>Never</td>
+{% endif %}
+<!-- <td>{{ item }}</td> -->
+<!-- <td>{{ item.script }}</td> -->
+<!-- <td>{{ item.rrdname }}</td> -->
+<td>
+    <a href="/edit/{{ encuids[loop.index - 1] }}"><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-wrench" aria-hidden="true"></span></button>
+    </a>
+    </td>
+    </tr>
+{% endfor %}
+</ol>
+</tbody>
+</table>
+<br>
+{% endblock %}
+

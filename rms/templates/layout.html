@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+    <head>
+        {% block head %}
+        <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/bootstrap-switch.js') }}"></script>
+        <script src="{{ url_for('static', filename='bootstrap/js/main.js') }}"></script>
+	<script src="{{ url_for('static', filename='moment.js') }}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap/css/bootstrap.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+        <link href="{{ url_for('static', filename='bootstrap/css/bootstrap-switch.css') }}" rel="stylesheet">
+        <link href="http://getbootstrap.com/assets/css/docs.min.css" rel="stylesheet">
+        <title>{% block title %}{% endblock %} - {{ commons.domain_name }}</title>
+        {% endblock %}
+    </head>
+    <body>
+        <center>
+        <div class="centertop">
+            <center>
+            <div class="head" style="height:81px;">
+                <div class="logo">
+                    <a href="/" target="_self" style="font: bold 22pt Tahoma, Arial, sans-serif; color: #FFF; text-decoration: none;"><font style="background-color:#40B516;">&nbsp;REMOTE TASK SCHEDULER&nbsp;</font></a>
+                </div>
+                <br class="clear">
+            </div>
+            </center>
+        </div>
+        <center>
+        <div class="hr"></div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <div class="span2">
+                   <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li>Overview</li>
+            {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('new') }}">New Task</a></li>
+            <li><a href="{{ url_for('admin_main') }}">Admin</a></li>
+            <li><a href="{{ url_for('admin_logs') }}">Logs</a></li>
+            <br>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            {% else %}
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            {% endif %}
+          </ul>
+          <ul class="nav nav-sidebar">
+        </div>
+                </div>
+                <div class="main">
+                 <div class="content">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                    {% for category, message in messages %}
+                        {{ category }}: {{ message }}
+                    {% endfor %}
+                    {% endif %}
+                    {% endwith %}
+                        {% block content %}
+                        {% endblock %}
+                 </div>
+                </div>
+            </div>
+        </div>
+        </center>
+        <div class="footer">
+            {% block footer %}
+            &copy; Copyright {{ commons.copyright_year }} by <a href="/">{{ commons.domain_name }}</a>.
+            {% endblock %}
+        </div>
+    </body>
+</html>

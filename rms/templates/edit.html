@@ -1,0 +1,329 @@
+{% extends "layout.html" %}
+
+{% block title %}
+  Edit
+{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <style type="text/css">
+    .important { color: #336699; }
+  </style>
+{% endblock %}
+{% block content %}
+<form class="form-newjob" action="{{ url_for('edit') }}/{{ task.uid }}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+<fieldset>
+
+<!-- Form Name -->
+<legend>Edit Backup Instance</legend>
+<!-- Text input-->
+<div class="control-group">
+    <input id="jobname" name="jobname" type="text" placeholder="Jobname" class="input-large" required="" value="{{ task.jobname }}">
+</div>
+<div class="control-group">
+    <input id="username" name="username" type="text" placeholder="Username" class="input-large" onkeypress="return restrictCharacters(this, event, alphaIntOnly);" onkeyup="onetoother(this)" required="" value="{{ task.username }}">
+</div>
+<div class="control-group">
+    <input id="hostname" name="hostname" type="text" placeholder="Hostname" class="input-large" required="" value="{{ task.hostname }}">
+</div>
+<div class="control-group">
+    <input id="port" name="port" type="text" placeholder="port (empty means 22)" class="input-large" value="{{ task.port }}">
+</div>
+<div class="control-group">
+    <input id="secret" name="secret" type="text" placeholder="PrivateKey(empty to use user key)" class="input-large" value="{{ task.secret }}">
+</div>
+<div class="control-group">                 
+    <textarea class="field span6" rows="8" id="fabscript" name="fabscript" placeholder="Paste script here">{{ task.script }}</textarea>
+</div>
+
+
+<div class="control-group inline">
+  <label class="control-label" for="sec"></label>
+  <div class="controls">
+    <select id="sec" name="sec" class="input-mini">
+      {% if task.sec == None %}
+      <option value='None' selected>Sec</option>
+      {% else %}
+      <option value='None'>Sec</option>
+      <option value='{{task.sec}}' selected>{{ task.sec }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 60) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 60) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="min"></label>
+  <div class="controls">
+    <select id="min" name="min" class="input-mini">
+      {% if task.min == None %}
+      <option value='None' selected>Min</option>
+      {% else %}
+      <option value='None'>Min</option>
+      <option value='{{task.min}}' selected>{{ task.min }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 60) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 60) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="hour"></label>
+  <div class="controls">
+    <select id="hour" name="hour" class="input-small">
+      {% if task.hour == None %}
+      <option value='None' selected>Hour</option>
+      {% else %}
+      <option value='None'>Hour</option>
+      <option value='{{task.hour}}' selected>{{ task.hour }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 24) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 24) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="day"></label>
+  <div class="controls">
+    <select id="day" name="day" class="input-small">
+      {% if task.day == None %}
+      <option value='None' selected>Day</option>
+      {% else %}
+      <option value='None'>Day</option>
+      <option value='{{task.day}}' selected>{{ task.day }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 32) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 32) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="week"></label>
+  <div class="controls">
+    <select id="week" name="week" class="input-small">
+      {% if task.week == None %}
+      <option value='None' selected>Week</option>
+      {% else %}
+      <option value='None'>Week</option>
+      <option value='{{task.week}}' selected>{{ task.week }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 54) %}
+            <option>*/{{ option }}</option>
+      {% endfor %}
+      {% for option in range(1, 54) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="dayofweek"></label>
+  <div class="controls">
+    <select id="dayofweek" name="dayofweek" class="input-small">
+      {% if task.dow == None %}
+      <option value='None' selected>DoW</option>
+      {% else %}
+      <option value='None'>DoW</option>
+      <option value='{{task.dow}}' selected>{{ task.dow }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(0, 7) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- Select Basic -->
+<div class="control-group inline">
+  <label class="control-label" for="month"></label>
+  <div class="controls">
+    <select id="month" name="month" class="input-small">
+      {% if task.month == None %}
+      <option value='None' selected>Month</option>
+      {% else %}
+      <option value='None'>Month</option>
+      <option value='{{task.month}}' selected>{{ task.month }}</option>
+      {% endif%}
+      <option>*</option>
+      {% for option in range(1, 13) %}
+            <option>{{ option }}</option>
+      {% endfor %}
+    </select>
+  </div>
+</div>
+
+<!-- <div class="control-group">
+    <input id="rrdname" name="rrdname" type="hidden" placeholder="RRD Name" class="input-large" onkeypress="return restrictCharacters(this, event, alphaIntOnly);" required="">
+</div> -->
+
+{% if task.enabled != True %}
+  <div class="control-group">
+      <input id="switch-isactive" type="checkbox" name="isactive" data-on-text="Enabled" data-off-text="Disabled">
+  </div>
+{% else %}
+  <div class="control-group">
+      <input id="switch-isactive" type="checkbox" name="isactive" data-on-text="Enabled" data-off-text="Disabled" checked>
+  </div>
+{% endif%}
+
+
+<!-- Button -->
+<div class="btn-group inline" data-toggle="buttons-checkbox">
+    <button id="save" name="save" value="saveonly" class="btn btn-success">Save</button>
+    <button id="saveandrun" name="saveandrun" value="saveandrun" class="btn btn-info">Save And Run</button>
+    <button id="delete1" type="button" onclick="asksure1()"  name="delete1" class="btn btn-danger">Delete</button>
+    <button id="delete2" type="button" onclick="asksure2()"  name="delete2" class="btn btn-warning">Sure?</button>
+    <button id="delete_task" name="delete_task" class="btn btn-danger" type="button">Yes! Delete!</button>
+</div>
+</fieldset>
+</form>
+
+{% if oldtasks %}
+<details>
+ <summary>Changelog:</summary>
+ <hr>
+ {% for task in oldtasks%}
+ <details>
+ <summary>{{ task.changing_date }}</summary>
+ <div class="changelog_internals">
+ Username: {{ task.username }}<br>
+ Hostname: {{ task.hostname }}<br>
+ Jobname: {{ task.jobname }}<br>
+ Port: {{ task.port }}<br>
+ Private Key: {{ task.secret }}<br>
+  </div>
+ Script:  <textarea class="field span6" rows="3" id="fabscript" name="fabscript" placeholder="Paste script here">{{ task.script }}</textarea><br>
+ |Sec: {{ task.sec }}|
+ Min: {{ task.min }}|
+ Hour: {{ task.hour }}|
+ Day: {{ task.day }}|
+ Week: {{ task.week }}|
+ Day of Week: {{ task.dow }}|
+ Month: {{ task.month }}|
+ <hr>
+  </details>
+ {% endfor %}
+{% else %}
+Older versions of this task didn't founded
+{% endif %}
+<br>
+
+</details>
+
+<br>
+        <script type="text/javascript">
+
+        $("[name='isactive']").bootstrapSwitch();
+        
+        var csrftoken = "{{ csrf_token() }}"
+ 
+          $("#delete_task").click(function() {
+          $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+              if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+              xhr.setRequestHeader("X-CSRFToken", csrftoken)
+                  }
+              }
+          })
+
+          $.post("/delete_task", { taskid : "{{ task.uid }}" } );
+
+          function redirecting() {     
+              window.location = '/';
+          }
+          setTimeout(redirecting, 500)
+        });
+
+//---------------
+        // $("#runnow").click(function() {
+          
+        //   $.ajaxSetup({
+        //       beforeSend: function(xhr, settings) {
+        //       if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+        //       xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        //           }
+        //       }
+        //   })
+
+        //   $.post("/runnow", { taskid : "{{ task.uid }}" } );
+        //   // window.location = '/';
+        //   $(this).toggleClass("active");
+        // });
+//---------------
+//---------------
+        $('#delete2').hide();
+        $('#delete_task').hide();
+
+        function asksure1() {
+          $('#delete1').hide();
+          $('#delete2').show();
+        }
+        function asksure2() {
+          $('#delete2').hide();
+          $('#delete_task').show();
+        }
+
+
+
+        // function onetoother(val){
+        //     var a = document.getElementById(val.id).value
+        //     document.getElementById("rrdname").value=a+"_{{rrdplus}}"
+        // }    
+        </script>
+        <script type="text/javascript">
+            var digitsOnly = /[1234567890]/g;
+            var integerOnly = /[0-9\.]/g;
+            var alphaIntOnly = /[A-Za-z0-9_]/g;
+
+            function restrictCharacters(myfield, e, restrictionType) {
+                if (!e) var e = window.event
+                if (e.keyCode) code = e.keyCode;
+                else if (e.which) code = e.which;
+                var character = String.fromCharCode(code);
+
+                if (code==27) { this.blur(); return false; }
+
+                if (!e.ctrlKey && code!=9 && code!=8 && code!=36 && code!=37 && code!=38 && (code!=39 || (code==39 && character=="'")) && code!=40) {
+                    if (character.match(restrictionType)) {
+                        return true;
+                    } else {
+                        return false;
+                    }              
+                }
+            }
+        </script>
+{% endblock %}
+
