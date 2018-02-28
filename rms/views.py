@@ -338,6 +338,9 @@ def new():
         task_dow = request.values.get('dayofweek')
         task_month = request.values.get('month')
         task_isactive = request.values.get('isactive') #None || "on"
+	
+	task_script = task_script.replace('\r\n', '\n')
+        task_script = task_script.replace('\r', '\n')
 
         if not task_port:
             task_port = 22
@@ -405,6 +408,9 @@ def edit(tid):
         task_dow = request.values.get('dayofweek')
         task_month = request.values.get('month')
         task_isactive = request.values.get('isactive') #None || "on"
+	
+	task_script = task_script.replace('\r\n', '\n')
+        task_script = task_script.replace('\r', '\n')
 
         select_arr = [task_sec, task_min, task_hour, task_day, task_week, task_dow, task_month]
 
